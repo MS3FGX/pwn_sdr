@@ -1,0 +1,106 @@
+================================================================================
+=                       PWN_SDR - RTL-SDR for Pwn Plug                         =
+=                       Tom Nardi (MS3FGX@gmail.com)                           =
+================================================================================
+
+PWN_SDR is a script that will install the lastest build of RTL-SDR on your
+Pwnie Express Pwn Plug. This includes installing the required dependencies,
+pulling the latest RTL-SDR from git, and running a hardware diagnostic.
+
+PWN_SDR can also start rtl_tcp, the server component of RTL-SDR, which allows
+you to remotely control the SDR device connected to the Pwn Plug.
+
+--------------------------------------------------------------------------------
+- Requirements                                                                 -
+--------------------------------------------------------------------------------
+
+To use PWN_SDR, you need to have a Pwnie Express Pwn Plug, and a DVB-T tuner
+based on the Realtek RTL2832U chip. Ideally your device will also have the
+Elonics E4000 chip for the best frequency range, but that is not required for
+operation.
+
+--------------------------------------------------------------------------------
+- Usage                                                                        -
+--------------------------------------------------------------------------------
+
+As of the current version, PWN_SDR supports the following arguments:
+
+install
+    Installs required dependencies, downloads RTL-SDR, and compiles it.
+
+uninstall
+    Completely removes RTL-SDR and its dependencies.
+
+upgrade
+    Upgrade the RTL-SDR installation, does not remove dependencies, but does
+remove currently installed build of RTL-SDR.
+
+start
+    Starts rtl_tcp to listen on the Pwn Plug's primary interface and with a set
+sample rate.
+
+stop
+    Kills a currently running rtl_tcp daemon.
+
+help
+    Prints usage information.
+
+--------------------------------------------------------------------------------
+- Sample Rate                                                                  -
+--------------------------------------------------------------------------------
+
+I've found that, when connected to the Pwn Plug, RTL-SDR devices can't deliver
+the same samples rates they do on the PC without dropping data. In my testing, 
+the best I could get without losing data was 1.7 MHz.
+
+This may be due to inherent hardware limitations of the Pwn Plug, but it would
+be worth trying on your own hardware to confirm. The "rtl_test" program
+included with RTL-SDR has a function to do exactly that. For example, a command
+to attempt to sample data from your device at 1.9 MHz looks like this:
+
+bash$ rtl_test -s rtl_test -s 2.0e6
+Found 1 device(s):
+  0:  ezcap USB 2.0 DVB-T/DAB/FM dongle
+
+Using device 0: ezcap USB 2.0 DVB-T/DAB/FM dongle
+Found Elonics E4000 tuner
+Supported gain values (18): -1.0 1.5 4.0 6.5 9.0 11.5 14.0 16.5 19.0 21.5 24.0
+29.0 34.0 42.0 43.0 45.0 47.0 49.0 
+Exact sample rate is: 2000000.052982 Hz
+Reading samples in async mode...
+lost at least 52 bytes
+
+The "lost at least xx bytes" line shows that we are getting errors, and this
+sample rate is too high. Try with increasingly lower frequencies until you no
+longer see that message.
+
+--------------------------------------------------------------------------------
+- Remote Operation                                                             -
+--------------------------------------------------------------------------------
+
+Since the Pwn Plug has limited hardware capabilities, capturing data directly
+on the local device is not recommended. Attempting to log data to the Pwn
+Plug's internal storage is likely to lock the device up.
+
+To overcome this, the best option is to use the server component of RTL-SDR,
+called rtl_tcp. PWN_SDR is able to start and stop the daemon by executing it
+with the appropriate options.
+
+Once the rtl_tcp server has been started, you can connect to it from the remote
+machine by entering your Pwn Plug's IP and port information into GNU Radio in
+the following format:
+
+rtl_tcp=192.168.1.40:1234
+
+--------------------------------------------------------------------------------
+- License                                                                      -
+--------------------------------------------------------------------------------
+
+PWN_SDR is released under the BSD license. The license, in its entirety, is
+within the PWN_SDR source.
+
+--------------------------------------------------------------------------------
+- More Info                                                                    -
+--------------------------------------------------------------------------------
+
+For more information and updates, please see www.digifail.com
