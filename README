@@ -62,7 +62,7 @@ the best I could get without losing data was 1.7 MHz.
 This may be due to inherent hardware limitations of the Pwn Plug, but it would
 be worth trying on your own hardware to confirm. The "rtl_test" program
 included with RTL-SDR has a function to do exactly that. For example, a command
-to attempt to sample data from your device at 1.9 MHz looks like this:
+to attempt to sample data from your device at 2.0 MHz looks like this:
 
 bash$ rtl_test -s rtl_test -s 2.0e6
 Found 1 device(s):
