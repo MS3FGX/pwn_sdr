@@ -1,0 +1,9 @@
+07/08/11: Version 0.2
+	Added indicator of used/freed space
+	Ability to remove/install deps only
+	Added README
+
+07/07/11: Version 0.1
+	Initial build
+	Installs/Removes RTL-SDR
+	Starts/Stops rtl_tcp

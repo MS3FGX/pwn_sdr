@@ -3,18 +3,18 @@
 =                       Tom Nardi (MS3FGX@gmail.com)                           =
 ================================================================================
 
-PWN_SDR is a script that will install the lastest build of RTL-SDR on your
+pwn_sdr is a script that will install the lastest build of RTL-SDR on your
 Pwnie Express Pwn Plug. This includes installing the required dependencies,
 pulling the latest RTL-SDR from git, and running a hardware diagnostic.
 
-PWN_SDR can also start rtl_tcp, the server component of RTL-SDR, which allows
+pwn_sdr can also start rtl_tcp, the server component of RTL-SDR, which allows
 you to remotely control the SDR device connected to the Pwn Plug.
 
 --------------------------------------------------------------------------------
 - Requirements                                                                 -
 --------------------------------------------------------------------------------
 
-To use PWN_SDR, you need to have a Pwnie Express Pwn Plug, and a DVB-T tuner
+To use pwn_sdr, you need to have a Pwnie Express Pwn Plug, and a DVB-T tuner
 based on the Realtek RTL2832U chip. Ideally your device will also have the
 Elonics E4000 chip for the best frequency range, but that is not required for
 operation.
@@ -23,13 +23,19 @@ operation.
 - Usage                                                                        -
 --------------------------------------------------------------------------------
 
-As of the current version, PWN_SDR supports the following arguments:
+As of the current version, pwn_sdr supports the following arguments:
 
 install
     Installs required dependencies, downloads RTL-SDR, and compiles it.
 
 uninstall
     Completely removes RTL-SDR and its dependencies.
+
+deps
+    Install dependencies required to compile RTL-SDR, but not RTL-SDR itself.
+
+rmdeps
+    Remove dependencies required to compile RTL-SDR, but not RTL-SDR itself.
 
 upgrade
     Upgrade the RTL-SDR installation, does not remove dependencies, but does
@@ -96,8 +102,8 @@ rtl_tcp=192.168.1.40:1234
 - License                                                                      -
 --------------------------------------------------------------------------------
 
-PWN_SDR is released under the BSD license. The license, in its entirety, is
-within the PWN_SDR source.
+pwn_sdr is released under the BSD license. The license, in its entirety, is
+within the pwn_sdr source.
 
 --------------------------------------------------------------------------------
 - More Info                                                                    -

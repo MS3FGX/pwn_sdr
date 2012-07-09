@@ -1,7 +1,7 @@
 #!/bin/bash
 # 
 # PWN_SDR
-VER="0.1"
+VER="0.2"
 #
 # A script to install RTL-SDR on the Pwnie Express Pwn Plug. Can also start
 # and stop rtl_tcp.
@@ -65,7 +65,6 @@ exit 1
 
 InstallDEPS ()
 {
-echo "Installing..."
 echo -n "Updating Debian package list..."
 apt-get update -qq || \
 	ErrorMsg ERR "Unable to update packages!"
@@ -74,6 +73,16 @@ echo "Installing dependencies..."
 apt-get install -qq cmake git || \
 	ErrorMsg ERR "Unable to install dependencies!"
 echo "Dependencies installed."
+}
+
+RemoveDEPS ()
+{
+echo "Uninstalling dependencies..."
+apt-get remove -qq git less libcurl3-gnutls liberror-perl \
+	rsync cmake cmake-data emacsen-common libarchive1 \
+	libcurl3 libxmlrpc-c3 || \
+		ErrorMsg ERR "Unable to remove dependencies!"
+echo "Dependencies uninstalled."
 }
 
 InstallSDR ()
@@ -125,8 +134,18 @@ echo "OK"
 echo "RTL-SDR removed!"
 }
 
-# Few sanity checks
+Boiler ()
+{
+echo "  _____      ___  _   ___ ___  ___ "
+echo " | _ \ \    / / \| | / __|   \| _ \ "
+echo " |  _/\ \/\/ /| .\` | \__ \ |) |   / "
+echo " |_|   \_/\_/ |_|\_| |___/___/|_|_\  "
+echo
+}
 
+# Execution Start
+
+# Few sanity checks
 # Are we root? Should always be on Plug, but who knows.
 if [[ $EUID -ne 0 ]]; then
    echo "PWN_SDR must be run as root!" 1>&2
@@ -139,14 +158,13 @@ grep "Pwn Plug" /etc/motd > /dev/null \
 
 case $1 in
 'install')
-	echo "  _____      ___  _   ___ ___  ___ "
-	echo " | _ \ \    / / \| | / __|   \| _ \ "
-	echo " |  _/\ \/\/ /| .\` | \__ \ |) |   / "
-	echo " |_|   \_/\_/ |_|\_| |___/___/|_|_\  "
-	echo
+	Boiler
 	echo "This will install RTL-SDR on your Pwn Plug."
+	echo "Installation will take approximately 28 MB." 
+	echo
 	echo "Press CRTL+C to abort, any other key to continue."
 	read INPUT
+	echo "Installing..."
 	InstallDEPS
 	InstallSDR
 	echo
@@ -156,9 +174,7 @@ case $1 in
 	echo "Are you sure you want to remove RTL-SDR and all build dependencies?"
 	echo "Press CRTL+C to abort, any other key to continue."
 	read INPUT
-	echo "Uninstalling dependencies..."
-	apt-get remove -qq git less libcurl3-gnutls liberror-perl rsync cmake cmake-data emacsen-common libarchive1 libcurl3 libxmlrpc-c3 || ErrorMsg ERR "Unable to remove dependencies!"
-	echo "Dependencies uninstalled."
+	RemoveDEPS
 	RemoveSDR
 ;;	
 'upgrade')
@@ -178,6 +194,23 @@ case $1 in
 	rtl_tcp -a $IPADDR -p $PORT -s $SRATE > /dev/null 2>&1 &
 	exit 0
 ;;
+'deps')
+	Boiler
+	echo "This will install the dependencies for RTL-SDR on your"
+	echo "Pwn Plug. Installation will take approximately 24 MB." 
+	echo
+	echo "Press CRTL+C to abort, any other key to continue."
+	read INPUT
+	InstallDEPS
+;;
+'rmdeps')
+	echo "This will remove all of the dependencies for RTL-SDR."
+	echo "Approximately 24 MB will be freed."
+	echo
+	echo "Press CRTL+C to abort, any other key to continue."
+	read INPUT
+	RemoveDEPS
+;;	
 'stop')
 	echo -n "Stopping rtl_tcp..."
 	killall rtl_tcp 2> /dev/null
@@ -194,12 +227,14 @@ case $1 in
 	echo "install    - Install RTL-SDR"
 	echo "uninstall  - Remove RTL-SDR"
 	echo "upgrade    - Upgrade RTL-SDR"
+	echo "deps       - Install dependencies"
+	echo "rmdeps     - Remove dependencies"
 	echo "start      - Starts rtl_tcp server"
 	echo "stop       - Stops rtl_tcp server"
 	echo "help       - What you are reading now"
 ;;
 *)
 	echo "PWN_SDR Version: $VER"
-	echo "usage: $0 install|uninstall|upgrade|start|stop|help"
+	echo "usage: $0 install|uninstall|upgrade|deps|rmdeps|start|stop|help"
 esac
 # EOF
