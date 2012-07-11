@@ -1,9 +1,14 @@
-07/08/11: Version 0.2
+07/11/12:
+	Added "-9" to kill daemon
+	Added note about sample rate
+	Fixed dates in documentation...apparently thought it was 2011 still
+
+07/08/12: Version 0.2
 	Added indicator of used/freed space
 	Ability to remove/install deps only
 	Added README
 
-07/07/11: Version 0.1
+07/07/12: Version 0.1
 	Initial build
 	Installs/Removes RTL-SDR
 	Starts/Stops rtl_tcp

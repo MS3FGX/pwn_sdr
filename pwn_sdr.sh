@@ -7,7 +7,7 @@ VER="0.2"
 # and stop rtl_tcp.
 
 # Options
-# Sample rate
+# Sample rate (lower this for slow network connections)
 SRATE="1.5e6"
 
 # Port to listen on
@@ -213,7 +213,7 @@ case $1 in
 ;;	
 'stop')
 	echo -n "Stopping rtl_tcp..."
-	killall rtl_tcp 2> /dev/null
+	killall -9 rtl_tcp 2> /dev/null
 	echo "OK!"
 	exit 0
 ;;
