@@ -1,3 +1,6 @@
+08/1/12: Version 0.3
+	Added "UNPLUGGED" variable to run on non-Plugs.
+
 07/11/12:
 	Added "-9" to kill daemon
 	Added note about sample rate
