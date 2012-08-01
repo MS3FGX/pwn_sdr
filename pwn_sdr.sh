@@ -14,7 +14,10 @@ SRATE="1.5e6"
 PORT="1234"
 
 # Build DIR
-BUILD_DIR=/tmp/sdr
+BUILD_DIR="/tmp/sdr"
+
+# Uncomment to run on non-Plugs. Safety is not guaranteed.
+#UNPLUGGED="1"
 
 #---------------------------------License--------------------------------------#
 #
@@ -152,9 +155,11 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-# Is this a Pwn Plug?
-grep "Pwn Plug" /etc/motd > /dev/null \
+if [[ $UNPLUGGED -ne 1 ]]; then
+	# Is this a Pwn Plug?
+	grep "Pwn Plug" /etc/motd > /dev/null \
 	 || ErrorMsg ERR "This script is only designed for the Pwnie Express Pwn Plug!"
+fi
 
 case $1 in
 'install')
