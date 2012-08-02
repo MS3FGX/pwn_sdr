@@ -1,7 +1,7 @@
 #!/bin/bash
 # 
 # PWN_SDR
-VER="0.2"
+VER="0.3"
 #
 # A script to install RTL-SDR on the Pwnie Express Pwn Plug. Can also start
 # and stop rtl_tcp.
